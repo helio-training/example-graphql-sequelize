@@ -1,0 +1,19 @@
+# Application Types
+type User {
+  id: Int!
+  createdAt: String!
+  email: String!
+  updatedAt: String!
+}
+
+# Root Types
+
+type Query {
+  User(id: Int!): User
+  allUsers: [User]
+}
+
+type Mutation {
+  createUser(email: String!, password: String!): User
+  updateUser(id: Int!, email: String, password: String): User
+}
