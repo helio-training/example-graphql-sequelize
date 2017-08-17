@@ -1,4 +1,5 @@
 import User from '../db/models/user'
+import Profile from '../db/models/profile'
 import logger from '../logger'
 
 /*
@@ -11,7 +12,7 @@ export default {
     async allUsers (_doc, _args, _context, _info) {
       try {
         const users = await User.findAll()
-        return users.map((user) => user.get({ plain: true }))
+        return (users) ? users.map((user) => user.get({ plain: true })) : []
       } catch (err) {
         logger.error(err)
         throw err
@@ -24,7 +25,7 @@ export default {
         // .findById just takes one argument - the id of the record
         // .find allows you to specify other fields of a user that you want to lookup by
         const user = await User.findById(args.id)
-        return user.get({ plain: true })
+        return (user) ? user.get({ plain: true }) : null
       } catch (err) {
         logger.error(err)
         throw err
@@ -36,7 +37,7 @@ export default {
     async createUser (_doc, args, _context, _info) {
       try {
         const user = await User.create(args)
-        return user.get({ plain: true })
+        return (user) ? user.get({ plain: true }) : null
       } catch (err) {
         logger.error(err)
         throw err
@@ -48,7 +49,19 @@ export default {
         let user = await User.findById(args.id)
         user = await user.update(args)
 
-        return user.get({ plain: true })
+        return (user) ? user.get({ plain: true }) : null
+      } catch (err) {
+        logger.error(err)
+        throw err
+      }
+    }
+  },
+
+  User: {
+    async profile (user) {
+      try {
+        let profile = await Profile.findOne({ where: { userId: user.id } })
+        return (profile) ? profile.get({ plain: true }) : null
       } catch (err) {
         logger.error(err)
         throw err

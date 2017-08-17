@@ -3,7 +3,18 @@ type User {
   id: Int!
   createdAt: String!
   email: String!
+  profile: Profile
   updatedAt: String!
+}
+
+type Profile {
+  id: Int!
+  fullName: String!
+  fullAddress: String
+  phoneNumber: String
+  createdAt: String!
+  updatedAt: String!
+  user: User
 }
 
 # Root Types
@@ -11,9 +22,14 @@ type User {
 type Query {
   User(id: Int!): User
   allUsers: [User]
+
+  Profile(id: Int!): Profile
+  allProfiles: [Profile]
 }
 
 type Mutation {
   createUser(email: String!, password: String!): User
   updateUser(id: Int!, email: String, password: String): User
+
+  createProfile(fullName: String!, fullAddress: String, phoneNumber: String, userId: Int!): Profile
 }
