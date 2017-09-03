@@ -1,4 +1,7 @@
+scalar Date
+
 # Application Types
+
 type User {
   id: Int!
   createdAt: String!
@@ -7,14 +10,28 @@ type User {
   updatedAt: String!
 }
 
+input UserInput {
+  email: String!
+  password: String!
+  profile: ProfileInput
+}
+
 type Profile {
   id: Int!
   fullName: String!
   fullAddress: String
   phoneNumber: String
-  createdAt: String!
-  updatedAt: String!
+  createdAt: Date!
+  updatedAt: Date!
   user: User
+}
+
+input ProfileInput {
+  fullName: String!
+  fullAddress: String
+  phoneNumber: String
+  userId: Int
+  user: UserInput
 }
 
 # Root Types
@@ -28,7 +45,7 @@ type Query {
 }
 
 type Mutation {
-  createUser(email: String!, password: String!): User
+  createUser(user: UserInput!): User
   updateUser(id: Int!, email: String, password: String): User
 
   createProfile(fullName: String!, fullAddress: String, phoneNumber: String, userId: Int!): Profile

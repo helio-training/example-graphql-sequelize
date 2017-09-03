@@ -34,9 +34,13 @@ export default {
   },
 
   Mutation: {
-    async createUser (_doc, args, _context, _info) {
+    createUser: async (_doc, args, _context, _info) => {
       try {
-        const user = await User.create(args)
+        const user = await User.create({
+          email: args.user.email,
+          password: args.user.password
+        })
+
         return (user) ? user.get({ plain: true }) : null
       } catch (err) {
         logger.error(err)
